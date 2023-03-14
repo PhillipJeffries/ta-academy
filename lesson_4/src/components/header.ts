@@ -8,7 +8,7 @@ export class Header extends Component {
     };
 
     public async clickAccountTooltip(): Promise<void> {
-        await this.LOCATORS.accountTooltip.click();
+        await this.LOCATORS.accountTooltip.hover();
     }
 
     public async clickCreateAccount(): Promise<void> {

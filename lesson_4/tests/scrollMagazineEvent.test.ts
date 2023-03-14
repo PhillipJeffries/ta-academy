@@ -5,7 +5,7 @@ test.use({ viewport: { height: 1080, width: 1920 } });
 
 test.describe('magazines', () => {
   test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto('/');
+    await page.goto('/', {waitUntil: 'domcontentloaded'});
 
     // await page.waitForURL(`${baseURL}`, {
     //   waitUntil: 'domcontentloaded',

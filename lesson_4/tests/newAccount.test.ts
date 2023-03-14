@@ -21,4 +21,8 @@ test.describe('create new account', () => {
 
         expect(await header.getUserName()).toBe(accountData.firstName);
     });
+    test('check profile name data', async () => {
+        
+    })
+
 });

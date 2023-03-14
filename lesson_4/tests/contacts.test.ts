@@ -8,6 +8,7 @@ test.describe('check amount of product on page', () => {
         expect(url).toBe(`${baseURL}contact-lenses`);
 
         const products = await categoryPage.getProducts();
+        await page.waitForTimeout(5000);
         expect(products.length).toBe(36);
     });
 });

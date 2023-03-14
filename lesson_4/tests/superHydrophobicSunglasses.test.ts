@@ -12,7 +12,7 @@ test.describe('PDPInteraction events', () => {
     test.beforeEach(async ({ page }) => {
         dataLayer = new DataLayer(page);
 
-        await page.goto('/');
+        await page.goto('/', { waitUntil: 'domcontentloaded' });
 
         const sunglassesButton = await page.waitForSelector('//nav//a[contains(., "Sunglasses")]');
         await Promise.all([sunglassesButton.click(), page.waitForLoadState('domcontentloaded')]);
