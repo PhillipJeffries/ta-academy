@@ -8,8 +8,9 @@ test.describe('check event in dataLayer', () => {
         eventLabel: '',
     };
 
-    test('check event in dataLayer 20% visibility', async ({ homePage, dataLayer }) => {
+    test('check event in dataLayer 20% visibility', async ({ homePage, dataLayer, page }) => {
         await homePage.open();
+        await page.waitForTimeout(5000);
         await homePage.Footer.scrollTo();
 
         const [event] = await dataLayer.waitForDataLayer({

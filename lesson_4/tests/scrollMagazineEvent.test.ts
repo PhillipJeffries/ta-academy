@@ -4,78 +4,68 @@ import { DataLayer } from '@Utils/dataLayer';
 test.use({ viewport: { height: 1080, width: 1920 } });
 
 test.describe('magazines', () => {
-  test.beforeEach(async ({ page, baseURL }) => {
-    await page.goto('/', {waitUntil: 'domcontentloaded'});
-
-    // await page.waitForURL(`${baseURL}`, {
-    //   waitUntil: 'domcontentloaded',
-    // });
-  });
-
-  test('check event HPInteraction', async ({ page }) => {
-    const dataLayer = new DataLayer(page);
-
-    const expectedEvent = {
-      event: 'HPInteraction',
-      eventAction: 'Magazines',
-      eventCategory: 'HP - D',
-      eventLabel: 'Visible',
-    };
-
-    const magazinesBlock = await page.$(
-      "//section[contains(.,  'As featured in.')]"
-    );
-
-    await magazinesBlock?.scrollIntoViewIfNeeded();
-
-    const [event] = await dataLayer.waitForDataLayer({
-      event: 'HPInteraction',
-      eventAction: 'Magazines',
+    test.beforeEach(async ({ page, baseURL }) => {
+        await page.goto('/', { waitUntil: 'domcontentloaded' });
+        await page.waitForTimeout(5000);
+        // await page.waitForURL(`${baseURL}`, {
+        //   waitUntil: 'domcontentloaded',
+        // });
     });
-    expect(event).toStrictEqual(expectedEvent);
-  });
 
-  test('magazines count is 7', async ({ page }) => {
-    const magazines = await page.$$(
-      "//ul[contains(@class, 'homeAsFeaturedIn')]/li"
-    );
+    test('check event HPInteraction', async ({ page }) => {
+        const dataLayer = new DataLayer(page);
 
-    expect(magazines.length).toBe(7);
-  });
+        const expectedEvent = {
+            event: 'HPInteraction',
+            eventAction: 'Magazines',
+            eventCategory: 'HP - D',
+            eventLabel: 'Visible',
+        };
 
-  test('event after click on magazine', async ({
-    page,
-  }) => {
-    const magazines = await page.$$(
-      "//ul[contains(@class, 'homeAsFeaturedIn')]/li"
-    );
+        const magazinesBlock = await page.$("//section[contains(.,  'As featured in.')]");
 
-    const dataLayer = new DataLayer(page);
+        await magazinesBlock?.scrollIntoViewIfNeeded();
 
-    const expectedEvent = {
-      event: 'HPInteraction',
-      eventAction: 'Magazines',
-      eventCategory: 'HP - D',
-      eventLabel: 'Click',
-    };
+        const [event] = await dataLayer.waitForDataLayer({
+            event: 'HPInteraction',
+            eventAction: 'Magazines',
+        });
+        expect(event).toStrictEqual(expectedEvent);
+    });
 
-    const magazinesBlock = await page.$(
-      "//section[contains(.,  'As featured in.')]"
-    );
+    test('magazines count is 7', async ({ page }) => {
+        const magazines = await page.$$("//ul[contains(@class, 'homeAsFeaturedIn')]/li");
 
-    await magazinesBlock?.scrollIntoViewIfNeeded();
+        expect(magazines.length).toBe(7);
+    });
 
-    for (const magazine of magazines) {
-      await page.evaluate(() => (window.dataLayer = []));
-      await magazine.click();
+    test('event after click on magazine', async ({ page }) => {
+        const magazines = await page.$$("//ul[contains(@class, 'homeAsFeaturedIn')]/li");
 
-      const [event] = await dataLayer.waitForDataLayer({
-        event: 'HPInteraction',
-        eventAction: 'Magazines',
-        eventLabel: 'Click',
-      });
+        const dataLayer = new DataLayer(page);
 
-      expect(event).toStrictEqual(expectedEvent);
-    }
-  });
+        const expectedEvent = {
+            event: 'HPInteraction',
+            eventAction: 'Magazines',
+            eventCategory: 'HP - D',
+            eventLabel: 'Click',
+        };
+
+        const magazinesBlock = await page.$("//section[contains(.,  'As featured in.')]");
+
+        await magazinesBlock?.scrollIntoViewIfNeeded();
+
+        for (const magazine of magazines) {
+            await page.evaluate(() => (window.dataLayer = []));
+            await magazine.click();
+
+            const [event] = await dataLayer.waitForDataLayer({
+                event: 'HPInteraction',
+                eventAction: 'Magazines',
+                eventLabel: 'Click',
+            });
+
+            expect(event).toStrictEqual(expectedEvent);
+        }
+    });
 });

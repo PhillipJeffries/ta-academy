@@ -18,7 +18,7 @@ export class HomePage extends Container {
     public Footer = new Footer(this.LOCATORS.footer, this.page);
     public Header = new Header(this.LOCATORS.header, this.page);
     public RegisterForm = new RegisterPopupForm(this.LOCATORS.registerForm, this.page);
-    public NavMenu = new NavMenu(this.LOCATORS.navMenu, this.page)
+    public NavMenu = new NavMenu(this.LOCATORS.navMenu, this.page);
 
     public async open() {
         await this.page.goto('/', { waitUntil: 'domcontentloaded' });

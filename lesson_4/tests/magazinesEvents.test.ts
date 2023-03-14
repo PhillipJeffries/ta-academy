@@ -8,8 +8,9 @@ test.describe('check HPInteraction events in DataLayer', () => {
         eventCategory: 'HP - D',
     };
 
-    test.beforeEach(async ({ homePage }) => {
+    test.beforeEach(async ({ homePage, page }) => {
         await homePage.open();
+        await page.waitForTimeout(5000);
         await homePage.FeatureIn.scrollTo();
     });
     test('check quantity and event should fire after click each magazine', async ({
